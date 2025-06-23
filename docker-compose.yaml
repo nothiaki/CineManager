@@ -1,17 +1,5 @@
 services:
 
-  cine-manager-api:
-    build: ./cine-manager-api
-    container_name: cine-manager-api
-    ports:
-      - 8080:8080
-    volumes:
-      - ./cine-manager-api:/cine-manager-api
-    working_dir: /cine-manager-api
-    restart: no
-    networks:
-      - dev
-
   postgres-database:
     image: postgres
     container_name: postgres-database

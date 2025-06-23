@@ -20,7 +20,6 @@ public class UserServiceImpl implements UserService {
   @Override
   public ResponseCreateUserDto create(RequestCreateUserDto requestCreateUserDto) {
     User user = userMapper.requestCreateUserDtoToDomain(requestCreateUserDto);
-    System.out.println("LOG muahahha entrou no service");
 
     return userMapper.domainToResponseCreateUserDto(user);
   }
