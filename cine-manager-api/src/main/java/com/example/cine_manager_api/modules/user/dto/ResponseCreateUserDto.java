@@ -14,7 +14,6 @@ public record ResponseCreateUserDto(
   LocalDate birth,
   LocalDate createdAt,
   LocalDate updatedAt,
-  Role role,
-  boolean isActive
+  Role role
 
 ) {}
