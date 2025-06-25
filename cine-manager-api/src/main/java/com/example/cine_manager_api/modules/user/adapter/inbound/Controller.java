@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.cine_manager_api.modules.user.service.UserService;
+
+import jakarta.validation.Valid;
+
 import com.example.cine_manager_api.modules.user.dto.RequestCreateUserDto;
 import com.example.cine_manager_api.modules.user.dto.ResponseCreateUserDto;
 
@@ -22,7 +25,7 @@ public class Controller {
   }
 
   @PostMapping
-  public ResponseEntity<ResponseCreateUserDto> create(@RequestBody RequestCreateUserDto requestCreateUserDto) {
+  public ResponseEntity<ResponseCreateUserDto> create(@RequestBody @Valid RequestCreateUserDto requestCreateUserDto) {
     ResponseCreateUserDto responseCreateUserDto = userService.create(requestCreateUserDto);
     return new ResponseEntity<ResponseCreateUserDto>(responseCreateUserDto, HttpStatus.CREATED);
   }
