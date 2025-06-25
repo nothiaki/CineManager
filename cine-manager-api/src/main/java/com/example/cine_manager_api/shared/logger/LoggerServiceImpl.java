@@ -1,4 +1,4 @@
-package com.example.cine_manager_api.shared.logger.impl;
+package com.example.cine_manager_api.shared.logger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

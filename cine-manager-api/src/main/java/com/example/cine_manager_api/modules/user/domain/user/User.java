@@ -1,4 +1,4 @@
-package com.example.cine_manager_api.modules.user.domain;
+package com.example.cine_manager_api.modules.user.domain.user;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -98,8 +98,9 @@ public class User {
     return isActive;
   }
 
-  public void setActive(boolean isActive) {
+  public void isActive(boolean isActive) {
     this.isActive = isActive;
   }
+
 }
 
