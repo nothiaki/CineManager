@@ -2,7 +2,9 @@ package com.example.cine_manager_api.modules.user.service;
 
 import java.time.LocalDate;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.example.cine_manager_api.shared.logger.LoggerService;
 import com.example.cine_manager_api.modules.user.domain.user.User;
@@ -33,11 +35,20 @@ public class UserServiceImpl implements UserService {
   public ResponseCreateUserDto create(RequestCreateUserDto requestCreateUserDto) {
     User newUser = userMapper.requestCreateUserDtoToDomain(requestCreateUserDto);
 
+
+    if(emailAlreadyExists(newUser.getEmail())) {
+      throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already in use");
+    }
+
+    if(usernameAlreadyExists(newUser.getUsername())) {
+      throw new ResponseStatusException(HttpStatus.CONFLICT, "Username already in use");
+    }
+
     newUser.setPasswordHash(newUser.getPasswordHash() + "#!&jkd");
     newUser.setCreatedAt(LocalDate.now());
     newUser.setUpdatedAt(LocalDate.now());
     newUser.setRole(Role.COSTUMER);
-    newUser.isActive(true);
+    newUser.setActive(true);
 
     User savedUser = userRepositoryPort.save(newUser);
 
@@ -50,6 +61,14 @@ public class UserServiceImpl implements UserService {
     );
 
     return userMapper.domainToResponseCreateUserDto(savedUser);
+  }
+
+  public boolean emailAlreadyExists(String email) {
+    return userRepositoryPort.existsByEmail(email);
+  }
+
+  public boolean usernameAlreadyExists(String username) {
+    return userRepositoryPort.existsByUsername(username);
   }
 
 }

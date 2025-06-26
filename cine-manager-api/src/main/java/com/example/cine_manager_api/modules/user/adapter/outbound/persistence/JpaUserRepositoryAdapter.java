@@ -29,4 +29,14 @@ public class JpaUserRepositoryAdapter implements UserRepositoryPort {
     return userMapper.jpaUserEntityToDomain(savedEntity);
   }
 
+  @Override
+  public boolean existsByEmail(String email) {
+    return springDataJpaUserRepository.existsByEmail(email);
+  }
+
+  @Override
+  public boolean existsByUsername(String username) {
+    return springDataJpaUserRepository.existsByUsername(username);
+  }
+
 }

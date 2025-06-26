@@ -98,7 +98,7 @@ public class User {
     return isActive;
   }
 
-  public void isActive(boolean isActive) {
+  public void setActive(boolean isActive) {
     this.isActive = isActive;
   }
 

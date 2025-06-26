@@ -4,5 +4,9 @@ import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface SpringDataJpaUserRepository
-  extends JpaRepository<JpaUserEntity, UUID> {}
+public interface SpringDataJpaUserRepository extends JpaRepository<JpaUserEntity, UUID> {
+
+  public boolean existsByEmail(String email);
+  public boolean existsByUsername(String username);
+
+}
