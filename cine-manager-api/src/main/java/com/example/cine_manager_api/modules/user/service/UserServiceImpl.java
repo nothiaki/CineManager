@@ -2,9 +2,7 @@ package com.example.cine_manager_api.modules.user.service;
 
 import java.time.LocalDate;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.example.cine_manager_api.shared.logger.LoggerService;
 import com.example.cine_manager_api.modules.user.domain.user.User;
@@ -12,6 +10,8 @@ import com.example.cine_manager_api.modules.user.domain.user.UserRepositoryPort;
 import com.example.cine_manager_api.modules.user.dto.RequestCreateUserDto;
 import com.example.cine_manager_api.modules.user.dto.ResponseCreateUserDto;
 import com.example.cine_manager_api.modules.user.enums.Role;
+import com.example.cine_manager_api.modules.user.exceptions.EmailAlreadyExistsException;
+import com.example.cine_manager_api.modules.user.exceptions.UsernameAlreadyExistsException;
 import com.example.cine_manager_api.modules.user.mapper.UserMapper;
 
 @Service
@@ -37,11 +37,11 @@ public class UserServiceImpl implements UserService {
 
 
     if(emailAlreadyExists(newUser.getEmail())) {
-      throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already in use");
+      throw new EmailAlreadyExistsException();
     }
 
     if(usernameAlreadyExists(newUser.getUsername())) {
-      throw new ResponseStatusException(HttpStatus.CONFLICT, "Username already in use");
+      throw new UsernameAlreadyExistsException();
     }
 
     newUser.setPasswordHash(newUser.getPasswordHash() + "#!&jkd");
@@ -52,22 +52,16 @@ public class UserServiceImpl implements UserService {
 
     User savedUser = userRepositoryPort.save(newUser);
 
-    loggerService.info(
-      new StringBuilder()
-        .append("User with id: ")
-        .append(savedUser.getId())
-        .append(" was created")
-      .toString()
-    );
+    loggerService.info(UserServiceImpl.class, "User with id: {} was created", savedUser.getId());
 
     return userMapper.domainToResponseCreateUserDto(savedUser);
   }
 
-  public boolean emailAlreadyExists(String email) {
+  private boolean emailAlreadyExists(String email) {
     return userRepositoryPort.existsByEmail(email);
   }
 
-  public boolean usernameAlreadyExists(String username) {
+  private boolean usernameAlreadyExists(String username) {
     return userRepositoryPort.existsByUsername(username);
   }
 
